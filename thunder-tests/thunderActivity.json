@@ -1,0 +1,21 @@
+[
+  {
+    "_id": "56744ca1-5660-4274-a1dd-8fc821ecbc0f",
+    "colId": "history",
+    "containerId": "",
+    "name": "{{host}}/customers",
+    "url": "{{host}}/customers",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-11-29T01:59:51.348Z",
+    "modified": "2022-11-29T02:03:54.187Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"Elias Matheus\",\n  \"email\": \"elias.matheus@tes.com\"\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]
