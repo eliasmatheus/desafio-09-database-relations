@@ -31,7 +31,52 @@ class CreateOrderService {
   ) {}
 
   public async execute({ customer_id, products }: IRequest): Promise<Order> {
-    // TODO
+    const customer = await this.customersRepository.findById(customer_id);
+
+    if (!customer) {
+      throw new AppError('User not found');
+    }
+
+    const productsFound = await this.productsRepository.findAllById(products);
+
+    if (productsFound.length !== products.length) {
+      throw new AppError('One or more products not found');
+    }
+
+    const productsOutOfStock = productsFound.filter(product => {
+      const productFound = products.find(p => p.id === product.id);
+
+      if (!productFound) return true;
+
+      if (productFound.quantity < product.quantity) {
+        return false;
+      }
+
+      return true;
+    });
+
+    if (productsOutOfStock.length) {
+      throw new AppError('No quantities for one or more products this order');
+    }
+
+    await this.productsRepository.updateQuantity(products);
+
+    const productsWithPrice = products.map(product => {
+      const productFound = productsFound.find(p => p.id === product.id);
+
+      return {
+        product_id: product.id,
+        quantity: product.quantity,
+        price: productFound?.price ?? 0,
+      };
+    });
+
+    const order = this.ordersRepository.create({
+      customer,
+      products: productsWithPrice,
+    });
+
+    return order;
   }
 }
 

@@ -23,7 +23,7 @@ class Product {
   @Column()
   quantity: number;
 
-  @OneToMany(() => OrdersProducts, orders => orders.product)
+  @OneToMany(() => OrdersProducts, orders_products => orders_products.product)
   order_products: OrdersProducts[];
 
   @CreateDateColumn()
